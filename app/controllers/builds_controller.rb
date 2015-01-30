@@ -70,4 +70,5 @@ class BuildsController < ApplicationController
 
   def all_builds
     return Build.all.sort!{|a,b| a.name.downcase <=> b.name.downcase}
+  end
 end
