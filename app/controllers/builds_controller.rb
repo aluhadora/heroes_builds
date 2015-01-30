@@ -24,6 +24,12 @@ class BuildsController < ApplicationController
   def create
     builds = Build.where(name: params[:name])
 
+    params[:url] = "http://www.heroesfire.com/hots/talent-calculator/" + params[:name] + '#' + params[:url]
+    puts '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
+    puts params[:url]
+    puts '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
+
+
     if (builds.count > 0) 
       @build = builds.first
     

@@ -5,6 +5,8 @@ HeroesBuilds::Application.routes.draw do
   get 'builds/:name' => 'builds#show'
   get 'buildlist' => 'builds#index'
   get 'destroybuild/:name' => 'builds#destroy'
-  get 'addbuild/:name/:url' => 'builds#create', :constraints => { :url => /.*/ }
+  get 'addbuild/:name/*url' => 'builds#create'
+  # get 'addbuild/:name/:url' => 'builds#create', :constraints => { :url => /.*/ }
+
 
 end
