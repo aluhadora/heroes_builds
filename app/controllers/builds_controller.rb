@@ -8,7 +8,7 @@ class BuildsController < ApplicationController
   def show
     if (params[:name] == "undefined")
       @build = Build.new
-      @build.url = Build.all.map{ |h| h.name} * ", "
+      @build.url = all_builds.map{ |h| h.name} * ", "
     else
       set_build
       if (@build.nil?)
@@ -29,10 +29,6 @@ class BuildsController < ApplicationController
     build = build(params[:name])
 
     params[:url] = "http://www.heroesfire.com/hots/talent-calculator/" + params[:name] + '#' + params[:url]
-    puts '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
-    puts params[:url]
-    puts '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
-
 
     if (build.nil?)
       @build = Build.new
