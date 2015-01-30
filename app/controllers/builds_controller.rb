@@ -6,7 +6,7 @@ class BuildsController < ApplicationController
   end
 
   def show
-    if (params[:name] = "undefined")
+    if (params[:name] == "undefined")
       @build = Build.new
       @build.url = Build.all.map{ |h| h.name} * ", "
     else
