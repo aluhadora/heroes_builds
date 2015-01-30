@@ -2,7 +2,7 @@ class BuildsController < ApplicationController
   # before_filter :set_build, only [:show]
 
   def index
-    @builds = Build.all.sort!{|a,b| a.name.downcase <=> b.name.downcase}
+    @builds = all_builds
   end
 
   def show
@@ -20,8 +20,8 @@ class BuildsController < ApplicationController
   end
 
   def showtext
-    @builds = Build.all
-    @list = @builds.sort!{|a,b| a.name.downcase <=> b.name.downcase}.map{ |h| h.name } * ", "
+    @builds = all_builds
+    @list = @builds.map{ |h| h.name } * ", "
     render :layout => "plaintext"
   end
 
@@ -67,4 +67,7 @@ class BuildsController < ApplicationController
   def build(name)
     return Build.find(:first, :conditions => ["lower(name) = ?", name.downcase])
   end
+
+  def all_builds
+    return Build.all.sort!{|a,b| a.name.downcase <=> b.name.downcase}
 end
