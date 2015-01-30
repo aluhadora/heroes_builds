@@ -6,7 +6,12 @@ class BuildsController < ApplicationController
   end
 
   def show
-    set_build
+    if (params[:name] = "undefined")
+      @build = Build.new
+      @build.url = Build.all.map{ |h| h.name} * ", "
+    else
+      set_build
+    end
     render :layout => "plaintext"
   end
 
