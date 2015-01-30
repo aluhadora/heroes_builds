@@ -2,7 +2,7 @@ class BuildsController < ApplicationController
   # before_filter :set_build, only [:show]
 
   def index
-    @builds = Build.all
+    @builds = Build.all.sort!{|a,b| a.name.downcase <=> b.name.downcase}
   end
 
   def show
@@ -11,18 +11,22 @@ class BuildsController < ApplicationController
       @build.url = Build.all.map{ |h| h.name} * ", "
     else
       set_build
+      if (@build.nil?)
+        @build = Build.new
+        @build.url = "Hero " + params[:name] + " not found."
+      end
     end
     render :layout => "plaintext"
   end
 
   def showtext
     @builds = Build.all
-    @list = @builds.map{ |h| h.name } * ", "
+    @list = @builds.sort!{|a,b| a.name.downcase <=> b.name.downcase}.map{ |h| h.name } * ", "
     render :layout => "plaintext"
   end
 
   def create
-    builds = Build.where(name: params[:name])
+    build = build(params[:name])
 
     params[:url] = "http://www.heroesfire.com/hots/talent-calculator/" + params[:name] + '#' + params[:url]
     puts '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
@@ -30,15 +34,14 @@ class BuildsController < ApplicationController
     puts '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'
 
 
-    if (builds.count > 0) 
-      @build = builds.first
-    
-    else 
+    if (build.nil?)
       @build = Build.new
       @build.name = params[:name]
       @build.url = params[:url]
 
       @build.save
+    else
+      @build = builds.first
     end
 
     render :layout => "plaintext"
@@ -58,10 +61,10 @@ class BuildsController < ApplicationController
   private
 
   def set_build
-    @build = Build.where(name: params[:name]).first
-    puts '<<<<<<<<<'
-    puts @build.name
-    puts @build.url
-    puts '<<<<<<<<<<<<<<<'
+    @build = build(params[:name])
+  end
+
+  def build(name)
+    return Build.find(:first, :conditions => ["lower(name) = ?", name.downcase])
   end
 end
