@@ -54,6 +54,22 @@ class BuildsController < ApplicationController
     render :layout => "plaintext"
   end
 
+  def web_new
+    @build = Build.new
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def createnew
+    @build = Build.new(params[:build])
+
+    @build.save
+
+    redirect_to :action => "index"
+  end
+
   private
 
   def set_build
